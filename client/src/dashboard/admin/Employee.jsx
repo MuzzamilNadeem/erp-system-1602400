@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { Axios } from 'axios';
 import React from 'react'
 import { useEffect } from 'react';
 import { useState } from 'react';
@@ -8,6 +8,21 @@ const Employee = () => {
 
     const [empData, setEmpData] = useState([]);
     const [loading, setLoading] = useState(true);
+
+    const handleDelete = async (id) => {
+        try {
+
+            const response = await axios.delete(`http://localhost:3000/deleteemployee/${id}`)
+            console.log(response);
+
+            const getemployees = await axios.get("http://localhost:3000/getemployees")
+           setEmpData(getemployees.data.employees);
+
+        } catch (error) {
+
+            console.log(error)
+        }
+    }
 
     const fetchEmployee = async () => {
 
@@ -29,6 +44,7 @@ const Employee = () => {
 
     useEffect(() => {
         fetchEmployee();
+        
     }, [])
 
     return (
@@ -104,19 +120,20 @@ const Employee = () => {
                                                     <Pencil size={13} />
                                                     <span className="hidden sm:inline">Edit</span>
                                                 </button>
-                                                <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-red-500/40 text-red-400 hover:bg-red-500/10 hover:scale-105 transition-all">
-                                                    <Trash2 size={13} />
-                                                    <span className="hidden sm:inline">Delete</span>
-                                                </button>
-                                            </div>
-                                        </td>
+                                                <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-red-500/40 text-red-400 hover:bg-red-500/10 hover:scale-105 transition-all"
+                                                    onClick={() => handleDelete(e._id)}>
+                                                <Trash2 size={13} />
+                                                <span className="hidden sm:inline">Delete</span>
+                                            </button>
+                                        </div>
+                                    </td>
                                     </tr>
-                                ))
+                        ))
                             )}
-                        </tbody>
-                    </table>
-                </div>
+                    </tbody>
+                </table>
             </div>
+        </div >
         </>
     )
 }

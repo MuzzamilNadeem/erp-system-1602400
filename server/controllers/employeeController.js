@@ -24,6 +24,19 @@ const employeeController = {
         } catch (error) {
             console.log(error)
         }
+    },
+    deleteEmployee : async (req , res) => {
+        try {
+
+            await employee.deleteOne({_id : req.params.id});
+            res.send({message : "employee deleted successfully"})
+
+            
+        } catch (error) {
+
+            console.log(error)
+            
+        }
     }
 }
 
